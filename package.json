@@ -1,9 +1,9 @@
 {
-  "name": "svelte-ts-plugin",
+  "name": "my-plugin",
   "version": "1.0.0",
-  "description": "Svelte + TypeScript + Tailwind CSS plugin",
+  "description": "RisuAI Plugin using Svelte, TypeScript, and Tailwind CSS",
   "type": "module",
-  "main": "dist/bundle.js",
+  "main": "dist/my-plugin.js",
   "scripts": {
     "build": "vite build"
   },

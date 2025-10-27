@@ -1,12 +1,8 @@
-// src/main.ts
-
-// 1. Tailwind CSS 로드
+//@ts-ignore
 import './style.css';
-
-// 2. Svelte 컴포넌트 임포트
 import MyPopup from './MyPopup.svelte';
 
-// 3. 플러그인 초기화 함수
+// 플러그인 초기화 함수
 function initializePlugin() {
   const target = document.querySelector('.rs-setting-cont-3');
   if (!target) {
@@ -41,7 +37,7 @@ function initializePlugin() {
   target.appendChild(openButton);
 }
 
-// 4. DOM 로드 후 실행
+// DOM 로드 후 실행
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializePlugin);
 } else {
