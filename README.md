@@ -9,7 +9,6 @@ This is a development template for creating plugins for RisuAI frontend. Plugins
 - Tailwind CSS for styling
 - Lucide Svelte for icons
 - Single bundle output as UMD module
-- Built-in CSS layer isolation to prevent style conflicts
 - RisuAI API integration
 
 ## Project Structure
@@ -70,20 +69,6 @@ build: {
 }
 ```
 
-### 4. Prevent Style Conflicts
-
-The template uses CSS Layers to prevent style conflicts with the main RisuAI application. In `src/style.css`, update the layer name to match your plugin:
-
-```css
-@layer your-plugin-name {
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-}
-```
-
-Each plugin must use a unique layer name to prevent conflicts with other plugins.
-
 ## Building
 
 Build the plugin into a single JavaScript file:
@@ -138,9 +123,6 @@ Use Tailwind CSS classes directly in your components:
 ```svelte
 <button class="px-4 py-2 bg-blue-500 text-white rounded">Click me</button>
 ```
-
-The CSS Layer isolation ensures your styles do not affect the main application, and vice versa.
-
 ## API Reference
 
 The RisuAPI provides methods for:
