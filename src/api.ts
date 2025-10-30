@@ -94,18 +94,19 @@ function getFullName(name: string) {
 }
 
 /**
- * risuFetch, 
- * nativeFetch, 
- * getArg, 
- * setArg, 
- * getChar,
- * setChar, 
- * addProvider,
- * addRisuScriptHandler,
- * removeRisuScriptHandler,
- * addRisuReplacer,
- * removeRisuReplacer,
- * onUnload
+ * RisuAI Plugin API
+ * - risuFetch
+ * - nativeFetch
+ * - getArg
+ * - setArg
+ * - getChar
+ * - setChar
+ * - addProvider
+ * - addRisuScriptHandler
+ * - removeRisuScriptHandler
+ * - addRisuReplacer
+ * - removeRisuReplacer
+ * - onUnload
  */
 export class RisuAPI {
     static risuFetch(url: string, args?: GlobalFetchArgs): Promise<GlobalFetchResult> {

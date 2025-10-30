@@ -10,14 +10,14 @@ export default defineConfig({
       preprocess: sveltePreprocess(),
       emitCss: true,
     }),
-    cssInjectedByJsPlugin(),
-    risuPluginHeader(), // RisuAI 헤더 자동 생성
+    cssInjectedByJsPlugin(), // CSS injection
+    risuPluginHeader(), // RisuAI Plugin header injection
   ],
   build: {
     lib: {
-      entry: 'src/main.ts',
-      name: 'my-plugin',
-      fileName: () => 'my-plugin.js',
+      entry: 'src/main.ts', // Plugin entry file
+      name: 'my-plugin', // Plugin name
+      fileName: () => 'my-plugin.js', // Output file name
       formats: ['umd']
     },
     rollupOptions: {

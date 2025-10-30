@@ -1,57 +1,103 @@
 <script lang="ts">
-  export let onClose: () => void;
+	import { RisuAPI } from './api';
+	import { RISU_ARGS, RisuArgType } from './plugin';
+	import { X } from 'lucide-svelte';
 
-  let inputValue: string = '';
+	export let onClose: () => void;
+	
+	/* Example Popup Component to manage plugin arguments */ 
 
-  function handleSubmit(): void {
-    console.log('입력값:', inputValue);
-    onClose();
-  }
+	// Store arg values locally
+	let argValues: { [key: string]: string | number } = {};
+	const argNames = Object.keys(RISU_ARGS);
+
+	// Initialize arg values from RisuAPI
+	function initializeValues() {
+		argNames.forEach((argName) => {
+			argValues[argName] = RisuAPI.getArg(argName) ?? '';
+		});
+	}
+
+	// Update arg value both locally and in RisuAPI
+	function handleArgChange(argName: string, value: string | number) {
+		argValues[argName] = value;
+		RisuAPI.setArg(argName, value);
+	}
+
+	// Close Popup when the background is clicked
+	function handleBackgroundClick(e: MouseEvent) {
+		if (e.target === e.currentTarget) {
+			onClose();
+		}
+	}
+
+	// Initialize values from RisuAPIon component mount
+	initializeValues();
 </script>
 
-<div 
-  class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
-  on:click={onClose}
-  on:keydown={(e) => e.key === 'Escape' && onClose()}
-  role="button"
-  tabindex="0"
+<!-- Popup Background -->
+<div
+	class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+	on:click={handleBackgroundClick}
+	on:keydown={(e) => e.key === 'Escape' && onClose()}
+	role="button"
+	tabindex="0"
 >
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-  <div 
-    class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md"
-    on:click|stopPropagation
-    role="dialog"
-    aria-modal="true"
-  >
-    <h2 class="text-2xl font-bold mb-4 text-gray-800">
-      플러그인 팝업
-    </h2>
-
-    <p class="text-gray-600 mb-4">
-      Svelte + TypeScript + Tailwind로 만든 UI입니다.
-    </p>
-
-    <input 
-      type="text" 
-      bind:value={inputValue}
-      placeholder="입력 테스트..." 
-      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <div class="flex gap-3 mt-6">
-      <button 
-        on:click={onClose}
-        class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md transition"
-      >
-        취소
-      </button>
-      <button 
-        on:click={handleSubmit}
-        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition"
-      >
-        확인
-      </button>
-    </div>
-  </div>
+	<div class="bg-white p-6 rounded shadow-lg w-96 relative">
+		<!-- Close Button -->
+		<button
+			class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+			on:click={onClose}
+			aria-label="Close"
+		>
+			<X size={24} />
+		</button>
+		
+		<h2 class="text-xl font-bold mb-6 pr-8">Plugin Arguments</h2>
+		
+		<!-- Render inputs for each argument -->
+		{#each argNames as argName (argName)}
+			<div class="mb-4">
+				<label for={argName} class="block text-sm font-medium text-gray-700 mb-2">
+					{argName}
+					<span class="text-xs text-gray-500">
+						({RISU_ARGS[argName]})
+					</span>
+				</label>
+				
+				<!-- String type input -->
+				{#if RISU_ARGS[argName] === RisuArgType.String}
+					<input
+						id={argName}
+						type="text"
+						value={argValues[argName]}
+						on:input={(e) => handleArgChange(argName, e.currentTarget.value)}
+						placeholder="Enter text..."
+						class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+				<!-- Int type input -->
+				{:else if RISU_ARGS[argName] === RisuArgType.Int}
+					<input
+						id={argName}
+						type="number"
+						value={argValues[argName]}
+						on:input={(e) => handleArgChange(argName, parseInt(e.currentTarget.value) || 0)}
+						placeholder="Enter number..."
+						class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+				{/if}
+				
+				<p class="text-xs text-gray-500 mt-1">
+					Current value: <span class="font-mono">{argValues[argName]}</span>
+				</p>
+			</div>
+		{/each}
+		
+		<button
+			class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+			on:click={onClose}
+		>
+			Done
+		</button>
+	</div>
 </div>
