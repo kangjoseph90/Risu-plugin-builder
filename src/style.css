@@ -1,3 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Use layers to avoid style conflicts */
+@layer my-plugin {
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+}
