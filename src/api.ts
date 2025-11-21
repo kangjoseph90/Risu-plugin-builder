@@ -28,8 +28,27 @@ interface NativeFetchArgs {
     chatId?:string
 }
 
+interface MultiModal{
+    type:'image'|'video'|'audio'
+    base64:string,
+    height?:number,
+    width?:number
+}
+
+interface OpenAIChat{
+    role: 'system'|'user'|'assistant'|'function'
+    content: string
+    memo?:string
+    name?:string
+    removable?:boolean
+    attr?:string[]
+    multimodals?: MultiModal[]
+    thoughts?: string[]
+    cachePoint?: boolean
+}
+
 type PluginV2ProviderArgument = {
-    prompt_chat: any[] // OpenAIChat[]
+    prompt_chat: OpenAIChat[] 
     frequency_penalty: number
     min_p: number
     presence_penalty: number
@@ -87,6 +106,16 @@ const rawAPI = {
     removeRisuReplacer,
     //@ts-ignore
     onUnload,
+    //@ts-ignore 
+    alertSelect,
+    //@ts-ignore 
+    alertError, 
+    //@ts-ignore
+    alertInput, 
+    //@ts-ignore
+    alertNormal,
+    //@ts-ignore 
+    alertConfirm
 }
 
 function getFullName(name: string) {
@@ -107,6 +136,11 @@ function getFullName(name: string) {
  * - addRisuReplacer
  * - removeRisuReplacer
  * - onUnload
+ * - alertSelect
+ * - alertError
+ * - alertInput
+ * - alertNormal
+ * - alertConfirm
  */
 export class RisuAPI {
     static risuFetch(url: string, args?: GlobalFetchArgs): Promise<GlobalFetchResult> {
@@ -158,6 +192,18 @@ export class RisuAPI {
     }
     static onUnload(callback: () => void) {
         rawAPI.onUnload(callback);
+    }
+    static async alertSelect(msg: string[], display?: string): Promise<string> {
+        return rawAPI.alertSelect(msg, display);
+    }
+    static alertError(msg: string | Error){
+        rawAPI.alertError(msg);
+    } 
+    static async alertInput(msg: string, datalist?: [string, string][]): Promise<string> {
+        return rawAPI.alertInput(msg, datalist);
+    }
+    static alertNormal(msg: string) {
+        rawAPI.alertNormal(msg);
     }
 }
 
