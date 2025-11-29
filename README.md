@@ -1,142 +1,53 @@
-## RisuAI Plugin Development Template
+# Risu Plugin Builder
 
-This is a development template for creating plugins for RisuAI frontend. Plugins are built as single JavaScript files that are imported and executed by the RisuAI application.
+A boilerplate template for building plugins for RisuAI using **Svelte**, **TypeScript**, and **Tailwind CSS**. This project provides a pre-configured environment to jumpstart your plugin development.
 
 ## Features
 
-- TypeScript for type-safe development
-- Svelte for component-based UI
-- Tailwind CSS for styling
-- Lucide Svelte for icons
-- Single bundle output as UMD module
-- RisuAI API integration
+### Modern Tech Stack
 
-## Project Structure
+-   **Svelte 4**: Build reactive and efficient UI components.
+-   **TypeScript**: Develop with type safety and better developer experience.
+-   **Tailwind CSS**: Style your plugin quickly with utility-first CSS.
+-   **Vite**: Fast build tool and development server.
 
-```
-src/
-├── plugin.ts      - Plugin metadata and argument definitions (required)
-├── api.ts         - RisuAI plugin API interface (pre-configured)
-├── main.ts        - Entry point for the plugin
-├── style.css      - Tailwind styles with layer isolation
-├── MyPopup.svelte - Example Svelte component
-└── OpenButton.svelte - Example Svelte component
-```
+### RisuAI Integration
 
-## Setup and Configuration
+-   **API Wrapper**: Includes a `RisuAPI` wrapper for easy interaction with RisuAI's core functions.
+-   **Header Generation**: Automatically generates the required metadata header for RisuAI plugins.
+-   **Optimized Build**: Produces a single JavaScript file ready for import into RisuAI.
+-   **Example Components**:
+    -   `OpenButton.svelte`: Demonstrates how to inject a button into the RisuAI UI.
+    -   `MyPopup.svelte`: Example of a modal/popup component.
 
-### 1. Define Plugin Information
+---
 
-Edit `src/plugin.ts` to define your plugin's metadata and arguments:
+## Getting Started
 
-```typescript
-const PLUGIN_TITLE = 'my-plugin'
-const PLUGIN_VERSION = 'v1.0.0'
-const PLUGIN_NAME = `${PLUGIN_TITLE}-${PLUGIN_VERSION}`
+### 1. Clone & Install
 
-const ARG1 = 'my_arg1'
-const ARG2 = 'my_arg2'
+Clone this repository and install dependencies:
 
-const RISU_ARGS: RisuArgs = {
-    [ARG1]: RisuArgType.String,
-    [ARG2]: RisuArgType.Int,
-}
+```sh
+npm install
 ```
 
-The plugin name and arguments are required and must follow this format.
+### 2. Build
 
-### 2. Configure Package Information
+Build your plugin for production:
 
-Update `package.json` with your plugin name and description:
-
-```json
-{
-  "name": "your-plugin-name",
-  "version": "1.0.0",
-  "description": "Your plugin description"
-}
-```
-
-### 3. Update Vite Configuration
-
-Update `vite.config.ts` to match your plugin name:
-
-```typescript
-build: {
-  lib: {
-    fileName: () => 'your-plugin-name.js',
-  }
-}
-```
-
-## Building
-
-Build the plugin into a single JavaScript file:
-
-```bash
+```sh
 npm run build
 ```
 
-The compiled plugin will be output to `dist/your-plugin-name.js`.
+The output file will be located at `dist/my-plugin.js`.
 
-## Usage with RisuAI
+### 3. Import
 
-The built JavaScript file can be imported directly by RisuAI:
+Import the built file into RisuAI to test and use your plugin.
 
-The compiled bundle includes:
-- All Svelte components compiled to JavaScript
-- Tailwind CSS compiled and injected via JavaScript
-- The RisuAI plugin API integration
+---
 
-## Development
+## License
 
-### Using the RisuAI API
-
-The `RisuAPI` interface from `src/api.ts` provides access to RisuAI functionality. Example:
-
-```typescript
-import { RisuAPI } from './api';
-
-RisuAPI.onUnload(() => {
-    // Cleanup code when plugin unloads
-});
-```
-
-### Building UI with Svelte
-
-Create Svelte components in the `src` directory and import them in `main.ts`:
-
-```typescript
-import MyComponent from './MyComponent.svelte';
-
-const app = new MyComponent({
-    target: document.body,
-});
-```
-
-Svelte provides superior event management and component reusability compared to raw JavaScript DOM manipulation.
-
-### Styling with Tailwind CSS
-
-Use Tailwind CSS classes directly in your components:
-
-```svelte
-<button class="px-4 py-2 bg-blue-500 text-white rounded">Click me</button>
-```
-## API Reference
-
-The RisuAPI provides methods for:
-- Fetching data from RisuAI backend
-- Managing plugin arguments
-- Registering event handlers
-- Lifecycle management
-
-See `src/api.ts` for the complete interface definition.
-
-## Output
-
-The build output is a single UMD module:
-- File: `dist/your-plugin-name.js`
-- Ready to import and execute in RisuAI
-- CSS automatically injected on load
-- No external dependencies required
+This project is licensed under the **MIT License**.
